@@ -136,34 +136,34 @@ fn sobel(src: &Mat) -> Result<Mat> {
 }
 
 fn main() -> Result<()> {
-    for input_image in INPUT_IMAGES.into_iter() {
-        let src = load_grayscale(&format!("{input_image}.jpg"))?;
-
-        let canny_edges = canny(&src, CANNY_LOW_THRESHOLD, CANNY_HIGH_THRESHOLD)?;
-        let laplacian_edges = laplacian(&src)?;
-        let sobel_edges = sobel(&src)?;
-
-        imgcodecs::imwrite(
-            &format!("Canny-{input_image}.jpg"),
-            &canny_edges,
-            &opencv::core::Vector::default(),
-        )?;
-        imgcodecs::imwrite(
-            &format!("Laplacian-{input_image}.jpg"),
-            &laplacian_edges,
-            &opencv::core::Vector::default(),
-        )?;
-        imgcodecs::imwrite(
-            &format!("Sobel-{input_image}.jpg"),
-            &sobel_edges,
-            &opencv::core::Vector::default(),
-        )?;
-
-        highgui::imshow("Canny", &canny_edges)?;
-        highgui::imshow("Laplacian", &laplacian_edges)?;
-        highgui::imshow("Sobel", &sobel_edges)?;
-        highgui::wait_key(0)?;
-    }
+    // for input_image in INPUT_IMAGES.into_iter() {
+    //     let src = load_grayscale(&format!("{input_image}.jpg"))?;
+    //
+    //     let canny_edges = canny(&src, CANNY_LOW_THRESHOLD, CANNY_HIGH_THRESHOLD)?;
+    //     let laplacian_edges = laplacian(&src)?;
+    //     let sobel_edges = sobel(&src)?;
+    //
+    //     imgcodecs::imwrite(
+    //         &format!("Canny-{input_image}.jpg"),
+    //         &canny_edges,
+    //         &opencv::core::Vector::default(),
+    //     )?;
+    //     imgcodecs::imwrite(
+    //         &format!("Laplacian-{input_image}.jpg"),
+    //         &laplacian_edges,
+    //         &opencv::core::Vector::default(),
+    //     )?;
+    //     imgcodecs::imwrite(
+    //         &format!("Sobel-{input_image}.jpg"),
+    //         &sobel_edges,
+    //         &opencv::core::Vector::default(),
+    //     )?;
+    //
+    //     highgui::imshow("Canny", &canny_edges)?;
+    //     highgui::imshow("Laplacian", &laplacian_edges)?;
+    //     highgui::imshow("Sobel", &sobel_edges)?;
+    //     highgui::wait_key(0)?;
+    // }
 
     Ok(())
 }
