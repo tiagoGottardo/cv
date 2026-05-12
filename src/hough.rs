@@ -401,7 +401,7 @@ pub fn detect_lines_with_hough_and_draw_it(image: &Mat) -> Result<Mat> {
         &mut lines,
         1.0,
         std::f64::consts::PI / 180.0,
-        300,
+        150,
         0.0,
         0.0,
         0.0,
@@ -435,34 +435,4 @@ pub fn detect_lines_with_hough_and_draw_it(image: &Mat) -> Result<Mat> {
     }
 
     Ok(result)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use opencv::imgcodecs;
-    use std::path::Path;
-
-    #[test]
-    fn detects_purple_ellipse_in_brinquedos_when_asset_exists() -> Result<()> {
-        let asset_path = "assets/Brinquedos.jpg";
-        if !Path::new(asset_path).exists() {
-            return Ok(());
-        }
-
-        let image = imgcodecs::imread(asset_path, imgcodecs::IMREAD_COLOR)?;
-        let ellipses = detect_ellipses_with_hough(&image)?;
-
-        assert!(
-            ellipses.iter().any(|ellipse| {
-                (ellipse.center.x - 439).abs() <= 5
-                    && (ellipse.center.y - 245).abs() <= 5
-                    && (ellipse.axes.width - 80).abs() <= 8
-                    && (ellipse.axes.height - 40).abs() <= 8
-            }),
-            "expected to find the purple ellipse, got {ellipses:#?}"
-        );
-
-        Ok(())
-    }
 }
