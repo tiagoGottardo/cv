@@ -7,15 +7,20 @@ Small Rust/OpenCV experiments.
 - Edge detectors: Canny, Laplacian, Sobel
 - Histograms
 - Hough circles and lines
+- Background Subtraction
 - Sample images in `assets/`
+
+## Examples
+
+- histogram
+- edge_detectors
+- hough
+- background_subtraction
 
 ## Run
 
 ```sh
-cargo run
-cargo run --example edge_detectors
-cargo run --example histogram
-cargo run --example hough
+cargo run --example <example_name>
 ```
 
 ## Requirements
