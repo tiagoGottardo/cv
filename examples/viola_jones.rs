@@ -1,58 +1,43 @@
-use opencv::{
-    Result,
-    core::{Scalar, Size, Vector},
-    highgui, imgcodecs, imgproc,
-    objdetect::CascadeClassifier,
-    prelude::*,
+use computer_vision::viola_jones::{
+    self, classify, draw_label, generate_confusion_table, get_classifications, parse_label,
+    validate_classification, viola_jones,
 };
+use opencv::{Result, highgui, imgcodecs};
+
+const FOLDER_PATH: &str = "/home/tiagopg/Downloads/dataset2/baseline/highway/input";
+const FILE_PATH: &str = "/home/tiagopg/Downloads/dataset2/baseline/highway/input/in000960.jpg";
+const MODEL_PATH: &str = "assets/haarcascade_car.xml";
 
 fn main() -> Result<()> {
-    let image_path = "assets/highway.jpg";
-    let mut img = imgcodecs::imread(image_path, imgcodecs::IMREAD_COLOR)?;
-    if img.empty() {
-        panic!("Failed to load image: {}", image_path);
-    }
+    // let original_image = imgcodecs::imread(FILE_PATH, imgcodecs::IMREAD_COLOR)?;
 
-    let mut gray = Mat::default();
-    imgproc::cvt_color(
-        &img,
-        &mut gray,
-        imgproc::COLOR_BGR2GRAY,
-        0,
-        opencv::core::AlgorithmHint::ALGO_HINT_DEFAULT,
-    )?;
+    let result_image = viola_jones(FILE_PATH, MODEL_PATH)?;
 
-    let mut car_detector = CascadeClassifier::new("assets/haarcascade_car.xml")?;
-    if car_detector.empty()? {
-        panic!("Failed to load classifier!");
-    }
+    let labels = parse_label("assets/cars_label.txt");
 
-    let mut detected_cars = Vector::<opencv::core::Rect>::new();
-    car_detector.detect_multi_scale(
-        &gray,
-        &mut detected_cars,
-        1.01,
-        7,
-        0,
-        Size::new(0, 0),
-        Size::new(100, 100),
-    )?;
+    let result_image = draw_label(result_image, &labels[959])?;
 
-    println!("Detected Vehicles: {}", detected_cars.len());
-
-    for rect in detected_cars.iter() {
-        imgproc::rectangle(
-            &mut img,
-            rect,
-            Scalar::new(0.0, 255.0, 0.0, 0.0),
-            2,
-            imgproc::LINE_8,
-            0,
-        )?;
-    }
-
-    highgui::imshow("Detected Vehicles", &img)?;
+    highgui::imshow("Detected Vehicles", &result_image)?;
     highgui::wait_key(0)?;
+
+    // let detected = classify(&original_image, MODEL_PATH)?;
+
+    // let result = validate_classification(detected, &labels[959]);
+
+    let classifications = get_classifications(FOLDER_PATH, MODEL_PATH)?;
+
+    let table = generate_confusion_table(classifications, labels);
+
+    dbg!(table);
 
     Ok(())
 }
+
+// fn main() -> Result<()> {
+//     let img = viola_jones("assets/highway.jpg", "assets/haarcascade_car.xml")?;
+//
+//     highgui::imshow("Detected Vehicles", &img)?;
+//     highgui::wait_key(0)?;
+//
+//     Ok(())
+// }

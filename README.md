@@ -27,3 +27,10 @@ cargo run --example <example_name>
 
 - Rust
 - OpenCV installed locally
+
+[examples/viola_jones.rs:31:5] table = (
+    2221,
+    1913,
+    3298,
+)
+
