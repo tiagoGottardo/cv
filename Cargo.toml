@@ -5,3 +5,7 @@ edition = "2024"
 
 [dependencies]
 opencv = { version = "0.98.2", default-features = false, features = ["highgui", "objdetect", "imgcodecs", "imgproc", "videoio"] }
+anyhow = "1.0.102"
+mnist = "0.6.0"
+ndarray = "0.17.2"
+ndarray-rand = "0.16.0"
